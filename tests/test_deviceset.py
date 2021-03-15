@@ -97,7 +97,7 @@ class TestMFDeviceSet(TestCase):
     uncntrld = 0 # np.maximum(0, np.random.random(24)-0.4)
     cost = np.stack((np.sin(np.linspace(0, np.pi, 24))*0.5+0.1, np.ones(24)*0.001, np.zeros(24)), axis=1)
     devices = OrderedDict([
-        ('uncntrld', Device('uncntrld', 24, (uncntrld, uncntrld))),
+        # ('uncntrld', Device('uncntrld', 24, (uncntrld, uncntrld))),
         ('scalable', IDevice2('scalable', 24, (0., 2), (12, 18))),
         ('shiftable', CDevice2('shiftable', 24, (0, 2), (12, 24), a=0.5)), # IDevice2('shiftable', 24, (0, 2), (12, 24) Same same.
         ('generator', GDevice('generator', 24, (-50,0), None, **{'cost': cost})),
@@ -116,7 +116,7 @@ class TestMFDeviceSet(TestCase):
 
   def test_deviceset_soln_equivalence(self):
     ''' Given the set of devices returned by _test_devices(), if we only constrain the generator to
-    produce flow in some constant proportion and all other devices are unconstrained MF devices,
+    produce flow in some constant proportion, and all other devices are unconstrained MF devices,
     we sould theoretically get a same (or close to the same) solution as when no MF is present, since
     devices can take from any flow arbitrarily, and should do so such that the generator constraint
     is satisfied.
@@ -126,7 +126,7 @@ class TestMFDeviceSet(TestCase):
     db = SubBalancedDeviceSet(
       'b',
       [
-        MFDeviceSet(devices['uncntrld'], ['e', 'heat']),
+        # MFDeviceSet(devices['uncntrld'], ['e', 'heat']),
         MFDeviceSet(devices['scalable'], ['e', 'heat']),
         MFDeviceSet(devices['shiftable'], ['e', 'heat']),
         TwoRatioMFDeviceSet(devices['generator'], ['e', 'heat'], [1,8]),
@@ -140,7 +140,7 @@ class TestMFDeviceSet(TestCase):
     df_xa = pd.DataFrame.from_dict(dict(da.map(xa)), orient='index').transpose()
     df_xa.columns = [i.strip('a.') for i in df_xa.columns]
     df_xb = pd.DataFrame.from_dict(dict(db.map(xb)), orient='index').transpose()
-    for k in ['uncntrld', 'scalable', 'shiftable', 'generator']:
+    for k in ['scalable', 'shiftable', 'generator']: # ['uncntrld', 'scalable', 'shiftable', 'generator']:
       df_xb[k] = df_xb.filter(regex='%s' % (k,), axis=1).sum(axis=1)
       del df_xb['b.' + k + '.heat'], df_xb['b.' + k + '.e']
     df_xa.sort_index(axis=1, inplace=True)

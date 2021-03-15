@@ -28,7 +28,7 @@ class DeviceSet(BaseDevice):
     '''  '''
     if not (np.vectorize(lambda a: len(a))(np.array(devices)) == len(devices[0])).all():
       raise ValueError('Devices have miss-matched lengths')
-    if not re.match('^(?i)[a-z0-9][a-z0-9_-]*$', id):
+    if not re.match('(?i)^[a-z0-9][a-z0-9_-]*$', id):
       raise ValueError('id must be string matching ^(?i)[a-z0-9][a-z0-9_-]*$ Given "%s"' % (id,))
     self._id = id
     self._devices = devices

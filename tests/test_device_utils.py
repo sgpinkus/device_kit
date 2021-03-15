@@ -23,8 +23,9 @@ class TestBaseDevice(TestCase):
 
   def test_soc(self):
     r = np.random.random(24)
-    print(soc(r, 1, 1))
-    print(soc(r.reshape(24,1), 1, 1))
+    v = soc(r, 1, 1)
+    # print(v)
+    # print(soc(r.reshape(24,1), 1, 1))
 
 
 if __name__ == '__main__':

@@ -23,7 +23,7 @@ class Device(BaseDevice):
     construction. In this case they must add additional keys to _keys or also override the to_dict()
     method. Alternatively they may just define setters which will be called for all keys in **meta.
     '''
-    if not isinstance(id, str) or not re.match('^(?i)[a-z0-9][a-z0-9()\\[\\]\\+_-]*$', id):
+    if not isinstance(id, str) or not re.match('(?i)^[a-z0-9][a-z0-9()\\[\\]\\+_-]*$', id):
       warn('id should be a non empty string matching "^(?i)[a-z0-9][a-z0-9_-]*$" not "%s"' % (id,))
     self._length = length
     self._id = id

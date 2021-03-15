@@ -3,6 +3,7 @@ import logging
 import numbers
 import numpy as np
 from abc import ABC, abstractmethod
+import warnings
 
 logger = logging.getLogger(__name__)
 
@@ -179,8 +180,10 @@ class BaseDevice(ABC):
       raise ValueError('bounds must be a sequence type')
     fixed = False
     try:
-      if np.array(bounds).shape == (len(self), 2):
-        fixed = True
+      with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        if np.array(bounds).shape == (len(self), 2):
+          fixed = True
     except ValueError:
       pass
     if not fixed:
